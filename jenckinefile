@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'SELECTED_TEST',
+            choices: 'Test 1\nTest 2',
+            description: 'Select a test to run:'
+        )
+    }
+
+    stages {
+        stage('Run Job 1 with Selected Test') {
+            steps {
+                script {
+                    def selectedTest = params.SELECTED_TEST
+                    def jmeterScript
+
+                    // Map the selected test to the corresponding JMeter script
+                    if (selectedTest == 'Test 1') {
+                        jmeterScript = 'opensource-orangehrmlive.jmx'
+                    } else {
+                        jmeterScript = 'opensource-orangehrmlive1.jmx'
+                    }
+
+                    // Trigger Job 1 (Job 1 - test) with the selected JMeter script
+                    build job: 'test', parameters: [choice(name: 'JMETER_SCRIPT', value: jmeterScript)]
+                }
+            }
+        }
+    }
+}
