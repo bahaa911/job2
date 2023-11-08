@@ -1,3 +1,5 @@
+// Job 2 Pipeline
+
 pipeline {
     agent any
 
@@ -24,7 +26,7 @@ pipeline {
                     }
 
                     // Trigger Job 1 (Job 1 - test) with the selected JMeter script
-                    build job: 'test', parameters: [choice(name: 'JMETER_SCRIPT', value: jmeterScript)]
+                    build job: 'test', parameters: [string(name: 'SELECTED_SCRIPT', value: jmeterScript)]
                 }
             }
         }
